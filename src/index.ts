@@ -13,9 +13,7 @@ export default function (api: IApi, options) {
     const dirName = options.targetPath.slice(options.targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
     const tempDirName = Date.now(); // 临时目录
     console.log(rootPath, dirName, tempDirName);
-    fs.appendFileSync('log.txt', stats, 'utf8', err => {
-      console.log(err);
-    })
+    
     client.scp(options.path, {
       host: options.host,
       username: options.username,
@@ -23,7 +21,10 @@ export default function (api: IApi, options) {
       path: `${options.targetPath}/../${tempDirName}`
     }, err => {
       if(err){
-        console.log(err);
+        fs.appendFileSync('log.txt', stats, 'utf8', err => {
+          console.log(err);
+        })
+        process.exit(1);
       }
       let conn = new Client();
       conn.on('ready', function(){
