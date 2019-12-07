@@ -6,7 +6,7 @@
     "name": "xusanduo08",
     "email": "2279190887@qq.com"
   },
-  "repository": "https://github.com/xusanduo08/Javascript/tree/master/umi-plugin-upload",
+  "repository": "https://github.com/xusanduo08/umi-plugin-upload",
   "peerDependencies": {
     "umi": "2.x || ^2.9.0-0"
   },
