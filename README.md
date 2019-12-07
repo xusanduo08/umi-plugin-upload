@@ -1,22 +1,20 @@
 # umi-plugin-upload
-基于umi的插件，文件构建完毕后自动上传至指定服务器
-在没有远程构建的情况下，避免本地构建结束后，手动上传文件至远程服务器的情况
+基于umi的插件，文件构建完毕后自动上传至指定服务器。
+
+在没有远程构建的情况下，可以一个命令完成构建发布的流程。避免打包后再手动上传至服务器的麻烦。
 
 ## Install
 
 ```bash
 # or yarn
-$ npm install
+$ npm install umi-plugin-upload
 ```
 
-```bash
-$ npm run build --watch
-$ npm run start
-```
+
 
 ## Usage
 
-Configure in `.umirc.js`,
+Configure in `.umirc.js`
 
 ```js
 export default {
