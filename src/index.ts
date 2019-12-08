@@ -9,6 +9,18 @@ const {Client} = ssh2;
 export default function (api: IApi, options) {
 
   api.onBuildSuccess(({ stats }) => {
+    const {targetPath, path} = options;
+    
+    if(typeof path !== 'string'){
+      throw 'Path should be string !'
+    }
+
+    if(typeof targetPath !== 'string'){
+      throw 'Target path should be string !'
+    }
+    if(!targetPath.startsWith('/')){
+      throw 'Target path should be an absolute path !';
+    }
     const rootPath = options.targetPath.slice(0, options.targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
     const dirName = options.targetPath.slice(options.targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
     const tempDirName = Date.now(); // 临时目录
