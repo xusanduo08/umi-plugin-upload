@@ -9,10 +9,10 @@ const {Client} = ssh2;
 export default function (api: IApi, options) {
 
   api.onBuildSuccess(({ stats }) => {
-    const {targetPath, path} = options;
+    const {targetPath, sourcePath} = options;
     
-    if(typeof path !== 'string'){
-      throw 'Path should be string !'
+    if(typeof sourcePath !== 'string'){
+      throw 'Source path should be string !'
     }
 
     if(typeof targetPath !== 'string'){
@@ -26,7 +26,7 @@ export default function (api: IApi, options) {
     const tempDirName = Date.now(); // 临时目录
     console.log(rootPath, dirName, tempDirName);
     
-    client.scp(options.path, {
+    client.scp(options.sourcePath, {
       host: options.host,
       username: options.username,
       password: options.password,
