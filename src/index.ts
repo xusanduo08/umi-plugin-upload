@@ -11,6 +11,8 @@ export default function (api: IApi, options) {
   api.onBuildSuccess(({ stats }) => {
     const {targetPath, sourcePath, host, username, password} = options;
     
+    // TODO 如果没有配置密码的话，上传时给出交互，提示输入密码
+
     if(!username){
       throw 'Username is Required!';
     }
