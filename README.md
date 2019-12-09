@@ -30,6 +30,21 @@ export default {
 }
 ```
 
+## Example
+
+```js
+export default {
+  plugins: ['umi-plugin-upload', {
+      host: '129.204.69.223',
+      username: 'ubuntu',
+      password: '2005Meng@',
+      sourcePath: 'dist/',
+      targetPath: '/home/ubuntu/test'
+  }]
+}
+// 将dist目录上传到
+```
+
 ## Options
 
 TODO
