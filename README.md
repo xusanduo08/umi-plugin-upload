@@ -35,16 +35,28 @@ export default {
 ```js
 export default {
   plugins: ['umi-plugin-upload', {
-      host: '129.204.69.223',
-      username: 'ubuntu',
-      password: '2005Meng@',
+      host: 'xxxx',
+      username: 'xxxx',
+      password: 'xxxx',
       sourcePath: 'dist/',
       targetPath: '/home/ubuntu/test'
   }]
 }
-// 将dist目录上传到
+// 将dist目录上传到/home/ubuntu下，并命名为test
 ```
 
+```js
+export default {
+  plugins: ['umi-plugin-upload', {
+      host: 'xxxx',
+      username: 'xxxx',
+      password: 'xxxx',
+      sourcePath: 'dist/umi.js',
+      targetPath: '/home/ubuntu/test'
+  }]
+}
+// 将umi.js上传到ubuntu下并重命名为test
+```
 ## Options
 
 TODO
