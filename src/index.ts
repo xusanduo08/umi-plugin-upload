@@ -1,78 +1,44 @@
 // ref:
 // - https://umijs.org/plugin/develop.html
 import { IApi } from 'umi-types';
+import validate from './utils/validate';
+import uploadDir from './uploadDir';
+import uploadFile from './uploadFile';
 const fs = require('fs');
-const client = require('scp2');
-const ssh2 = require('ssh2');
-const {Client} = ssh2;
+const path = require('path');
+
 
 export default function (api: IApi, options) {
+  let {targetPath, sourcePath, host, username} = options;
+  
+  api.onBuildSuccess(() => {
 
-  api.onBuildSuccess(({ stats }) => {
-    const {targetPath, sourcePath, host, username, password} = options;
-    
-    if(!username){
-      throw 'Username is Required!';
-    }
+    // TODO 如果没有密码，提示输入密码
 
-    if(!host){
-      throw 'Host is Required!'
-    }
-    
+    validate({validateTarget:host, validateName:'Host', validateItems: [{type:'type', value:'string'}, {type:'required'}]});
+    validate({validateTarget: username, validateName:'Username', validateItems: [{type:'type', value:'string'}, {type:'required'}]});
+
     // TODO 校验是否是有效的host
 
-    if(typeof host !== 'string'){
-      throw 'Host should be String!';
-    }
-
-    if(typeof sourcePath !== 'string'){
-      throw 'Source path should be String!';
-    }
-
-    if(typeof targetPath !== 'string'){
-      throw 'Target path should be String!';
-    }
-    if(!targetPath.startsWith('/')){
-      throw 'Target path should be an Absolute Path !';
-    }
-    const rootPath = targetPath.slice(0, targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
-    const dirName = targetPath.slice(targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
-    const tempDirName = Date.now(); // 临时目录
-    console.log(rootPath, dirName, tempDirName);
-    console.log('Uploading...');
-    client.scp(sourcePath, {
-      host: host,
-      username: username,
-      password: password,
-      path: `${targetPath}/../${tempDirName}`
-    }, err => {
-      if(err){
-        fs.appendFileSync('log.txt', stats, 'utf8', err => {
-          console.log(err);
-        })
-        process.exit(1);
-      }
-      let conn = new Client();
-      conn.on('ready', function(){
-        // 1. 进入文件目录所在路径
-        // 2. 删除已存在文件目录
-        // 3. 将dist重命名成制定目录名
-        conn.exec(`cd ${rootPath};rm -rf ${dirName};mv ${tempDirName} ${dirName}`, function(err, stream){
-          if(err){
-            throw err;
+    validate({validateTarget: sourcePath, validateName:'SourcePath', validateItems: [{type: 'required'}, {type:'type', value: 'string'}]});
+    validate({validateTarget: targetPath,
+      validateName:'TargetPath',
+      validateItems: [
+        {type:'type', value: 'string'},
+        {type:'required'},
+        {type:'absolute path', rule:(target)=>{
+          if(!target.startsWith('/')){
+            return false;
           }
-          stream.on('close', function(){
-            console.log('Upload success !')
-            conn.end();
-          }).on('data', function(data){
-            console.log('stdout:: ' + data);
-          })
-        })
-      }).connect({
-        host: host,
-        username: username,
-        password: password
-      })
+          return true;
+        }}
+      ]
     })
+
+    if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
+      uploadDir(options);
+    } else {
+      uploadFile(options);
+    }
   });
 } 

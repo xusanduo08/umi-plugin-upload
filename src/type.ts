@@ -1,0 +1,1 @@
+export type options={targetPath:string, sourcePath: string, host: string, username: string, password: string}
