@@ -1,42 +1,38 @@
 // ref:
 // - https://umijs.org/plugin/develop.html
 import { IApi } from 'umi-types';
+import validate from './utils/validate';
 const fs = require('fs');
 const client = require('scp2');
 const ssh2 = require('ssh2');
 const {Client} = ssh2;
-
+console.log(validate)
 export default function (api: IApi, options) {
 
-  api.onBuildSuccess(({ stats }) => {
+  api.onBuildSuccess(() => {
     const {targetPath, sourcePath, host, username, password} = options;
     
-    // TODO 如果没有配置密码的话，上传时给出交互，提示输入密码
+    // TODO 如果没有密码，提示输入密码
 
-    if(!username){
-      throw 'Username is Required!';
-    }
-
-    if(!host){
-      throw 'Host is Required!'
-    }
+    validate(host, [{name:'type', value:'string'}, {name:'required'}])
+    validate(username, [{name:'type', value:'string'}, {name:'required'}])
     
     // TODO 校验是否是有效的host
 
-    if(typeof host !== 'string'){
-      throw 'Host should be String!';
-    }
-
-    if(typeof sourcePath !== 'string'){
-      throw 'Source path should be String!';
-    }
-
-    if(typeof targetPath !== 'string'){
-      throw 'Target path should be String!';
-    }
-    if(!targetPath.startsWith('/')){
-      throw 'Target path should be an Absolute Path !';
-    }
+    validate(sourcePath, [{name:'type', value: 'string'}])
+    
+    validate(targetPath, [
+      {name:'type', value: 'string'},
+      {name:'required'},
+      {name:'absolute path', rule:(target)=>{
+        if(!target.startsWith('/')){
+          return false;
+        }
+        return true;
+      }}
+    ]);
+    
+    
     const rootPath = targetPath.slice(0, targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
     const dirName = targetPath.slice(targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
     const tempDirName = Date.now(); // 临时目录
@@ -49,7 +45,9 @@ export default function (api: IApi, options) {
       path: `${targetPath}/../${tempDirName}`
     }, err => {
       if(err){
-        fs.appendFileSync('log.txt', stats, 'utf8', err => {
+        console.log('Upload failed!');
+        console.error(err);
+        fs.appendFileSync('log.txt', err, 'utf8', err => {
           console.log(err);
         })
         process.exit(1);
