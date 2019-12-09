@@ -15,7 +15,7 @@ function uploadDir(options: options):void{
   const rootPath = targetPath.slice(0, targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
   const dirName = targetPath.slice(targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
   const tempDirName = Date.now(); // 临时目录
-  console.log(rootPath, dirName, tempDirName);
+  console.log(rootPath, dirName, tempDirName, targetPath);
   console.log('Uploading...');
   client.scp(sourcePath, {
     host: host,
