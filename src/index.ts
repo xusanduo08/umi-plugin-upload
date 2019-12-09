@@ -3,15 +3,18 @@
 import { IApi } from 'umi-types';
 import validate from './utils/validate';
 const fs = require('fs');
+const path = require('path');
 const client = require('scp2');
 const ssh2 = require('ssh2');
 const {Client} = ssh2;
-console.log(validate)
+
 export default function (api: IApi, options) {
+  let {targetPath, sourcePath, host, username, password} = options;
+  console.log(path.resolve(sourcePath));
+  
 
   api.onBuildSuccess(() => {
-    const {targetPath, sourcePath, host, username, password} = options;
-    
+
     // TODO 如果没有密码，提示输入密码
 
     validate(host, [{name:'type', value:'string'}, {name:'required'}])
@@ -31,8 +34,20 @@ export default function (api: IApi, options) {
         return true;
       }}
     ]);
+
+    if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
+      // TODO 上传文件夹
+    } else {
+      // TODO 上传文件夹
+    }
     
     
+    
+    // TODO 处理目标路径结尾的斜杠/
+    if(targetPath[targetPath.length - 1] === '/'){
+      targetPath = targetPath.slice(0, targetPath.length - 1);
+    }
+
     const rootPath = targetPath.slice(0, targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
     const dirName = targetPath.slice(targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
     const tempDirName = Date.now(); // 临时目录
