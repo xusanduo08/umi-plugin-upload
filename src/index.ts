@@ -6,7 +6,7 @@ import uploadDir from './uploadDir';
 import uploadFile from './uploadFile';
 const fs = require('fs');
 const path = require('path');
-const inquirer = require('inquirer')
+const inquirer = require('inquirer');
 
 export default function (api: IApi, options) {
   let {targetPath, sourcePath, host, username, password} = options;
@@ -44,6 +44,12 @@ export default function (api: IApi, options) {
         uploadFile({...options, password: answers.password});
       }
      })
+    } else {
+      if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
+        uploadDir(options);
+      } else {
+        uploadFile(options);
+      }
     }
     
   });
