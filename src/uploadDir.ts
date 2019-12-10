@@ -1,5 +1,6 @@
 const client = require('scp2');
 const fs = require('fs');
+const signale = require('signale');
 const ssh2 = require('ssh2');
 const {Client} = ssh2;
 import {options} from './type';
@@ -15,8 +16,8 @@ function uploadDir(options: options):void{
   const rootPath = targetPath.slice(0, targetPath.lastIndexOf('/')); // 获取文件存放目录的上一层
   const dirName = targetPath.slice(targetPath.lastIndexOf('/') + 1); // 获取文件存放目录名
   const tempDirName = Date.now(); // 临时目录
-  console.log(rootPath, dirName, tempDirName, targetPath);
-  console.log('Uploading...');
+  signale.debug(rootPath, dirName, tempDirName, targetPath);
+  signale.pending('Uploading...');
   client.scp(sourcePath, {
     host: host,
     username: username,
@@ -24,10 +25,9 @@ function uploadDir(options: options):void{
     path: `${targetPath}/../${tempDirName}`
   }, err => {
     if(err){
-      console.log('Upload failed!');
-      console.error(err);
+      signale.error(err);
       fs.appendFileSync('log.txt', err, 'utf8', err => {
-        console.log(err);
+        signale.error(err);
       })
       process.exit(1);
     }
@@ -41,10 +41,10 @@ function uploadDir(options: options):void{
           throw err;
         }
         stream.on('close', function(){
-          console.log('Upload success !')
+          signale.success('Upload success !')
           conn.end();
         }).on('data', function(data){
-          console.log('stdout:: ' + data);
+          signale.debug('stdout:: ' + data);
         })
       })
     }).connect({
