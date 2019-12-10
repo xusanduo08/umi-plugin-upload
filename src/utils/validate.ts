@@ -12,7 +12,6 @@ const validate = function(v:validateItem):void{
     if(!type){
       signale.error('Lack of validate type !');
       process.exit(1);
-      continue;
     }
     switch(type){
       case 'type':
