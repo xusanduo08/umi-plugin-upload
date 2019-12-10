@@ -48,6 +48,7 @@ export default function (api: IApi, options) {
       }
      })
     } else {
+      // TODO 支持glob模式
       if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
         uploadDir(options);
       } else {
