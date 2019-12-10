@@ -23,8 +23,8 @@ export default {
       host, // 远程主机名
       username, // 用户名
       password, // 密码
-      sourcePath, // 所上传文件的本地路径，可以是绝对路径也可以是相对路径，相对路径相对的是配置文件所在目录
-      targetPath // 远程主机上文件存放的（绝对路径）
+      sourcePath, // 本地源文件路径，可以是绝对路径也可以是相对路径，相对路径相对的是配置文件所在目录
+      targetPath // 远程主机上文件存放路径（绝对路径）
     }],
   ],
 }
@@ -38,7 +38,7 @@ export default {
       host: 'xxxx',
       username: 'xxxx',
       password: 'xxxx',
-      sourcePath: 'dist/',
+      sourcePath: 'dist/*.js',
       targetPath: '/home/ubuntu/test'
   }]
 }
