@@ -6,15 +6,12 @@ import uploadDir from './uploadDir';
 import uploadFile from './uploadFile';
 const fs = require('fs');
 const path = require('path');
-
+const inquirer = require('inquirer')
 
 export default function (api: IApi, options) {
-  let {targetPath, sourcePath, host, username} = options;
-  
+  let {targetPath, sourcePath, host, username, password} = options;
+
   api.onBuildSuccess(() => {
-
-    // TODO 如果没有密码，提示输入密码
-
     validate({validateTarget:host, validateName:'Host', validateItems: [{type:'type', value:'string'}, {type:'required'}]});
     validate({validateTarget: username, validateName:'Username', validateItems: [{type:'type', value:'string'}, {type:'required'}]});
 
@@ -35,10 +32,19 @@ export default function (api: IApi, options) {
       ]
     })
 
-    if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
-      uploadDir(options);
-    } else {
-      uploadFile(options);
+    if(!password){
+     inquirer.prompt([{
+      type:'password',
+      name:'password',
+      message:'Please input your password'
+     }]).then(answers => {
+      if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
+        uploadDir({...options, password: answers.password});
+      } else {
+        uploadFile({...options, password: answers.password});
+      }
+     })
     }
+    
   });
 } 
