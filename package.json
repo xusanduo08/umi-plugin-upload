@@ -32,6 +32,7 @@
   "dependencies": {
     "inquirer": "^7.0.0",
     "scp2": "^0.5.0",
+    "signale": "^1.4.0",
     "ssh2": "^0.8.7"
   }
 }
