@@ -36,25 +36,25 @@ export default function (api: IApi, options) {
     })
 
     if(!password){
-     inquirer.prompt([{
-      type:'password',
-      name:'password',
-      message:'Please input your password'
-     }]).then(answers => {
-      if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
-        uploadDir({...options, password: answers.password});
-      } else {
-        uploadFile({...options, password: answers.password});
-      }
-     })
+      inquirer.prompt([{
+        type:'password',
+        name:'password',
+        message:'Please input your password'
+      }]).then(answers => {
+        upload({...options, password: answers.password})
+      })
     } else {
-      // TODO 支持glob模式
-      if(fs.statSync(path.resolve(sourcePath)).isDirectory()){
-        uploadDir(options);
-      } else {
-        uploadFile(options);
-      }
+      upload(options);
     }
-    
   });
-} 
+}
+
+function upload(options){
+  if(options.sourcePath.indexOf('*') !== -1){
+    uploadFile(options);
+  } else if(fs.statSync(path.resolve(options.sourcePath)).isDirectory()){
+    uploadDir(options);
+  } else {
+    uploadFile(options);
+  }
+}
