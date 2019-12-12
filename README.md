@@ -43,7 +43,7 @@ export default {
     host: 'xxxx',
     username: 'xxxx',
     password: 'xxxx',
-    sourcePath: 'dist/*.js',
+    sourcePath: 'dist/',
     targetPath: '/home/ubuntu/test'
   }]
 }
