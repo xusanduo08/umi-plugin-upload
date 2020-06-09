@@ -2,6 +2,7 @@
 [![NPM version](https://img.shields.io/npm/v/umi-plugin-upload.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload)
 [![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-upload.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload)
 
+适用于umi2.x，umi3.x请使用[umi-plugin-upload-new](https://www.npmjs.com/package/umi-plugin-upload-new)
 基于umi的插件，文件构建完毕后自动上传至指定服务器。:smile:
 
 在没有远程构建的情况下，可以一个命令完成构建发布的流程。:smirk: 避免打包后再手动上传至服务器的麻烦。:relieved:
