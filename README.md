@@ -1,6 +1,6 @@
 # umi-plugin-upload
-[![NPM version](https://img.shields.io/npm/v/umi-plugin-upload-new.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload-new)
-[![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-upload-new.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload-new)
+[![NPM version](https://img.shields.io/npm/v/umi-plugin-upload.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload)
+[![NPM downloads](http://img.shields.io/npm/dm/umi-plugin-upload.svg?style=flat)](https://npmjs.org/package/umi-plugin-upload)
 
 基于umi的插件，文件构建完毕后自动上传至指定服务器。:smile:
 
