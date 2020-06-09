@@ -1,6 +1,6 @@
 {
   "name": "umi-plugin-upload",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Upload output file after build successfully",
   "authors": {
     "name": "xusanduo08",
